@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>com.ms</groupId>
-    <artifactId>rpc-comsumer-user</artifactId>
+    <artifactId>rpc-consumer-user</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rpc-comsumer-user</name>
+    <name>rpc-consumer-user</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

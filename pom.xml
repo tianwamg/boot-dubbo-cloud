@@ -33,7 +33,7 @@
     <modules>
         <module>dubbo-rpc-api</module>
         <module>rpc-provider-user</module>
-        <module>rpc-comsumer-user</module>
+        <module>rpc-consumer-user</module>
         <module>rpc-provider-order</module>
         <module>rpc-consumer-order</module>
     </modules>
