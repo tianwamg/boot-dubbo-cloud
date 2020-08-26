@@ -1,13 +1,24 @@
 package com.ms;
 
-import org.junit.jupiter.api.Test;
+import com.ms.api.model.user.SysUser;
+import com.ms.mapper.ISysUserMapper;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
-class RpcProviderUserApplicationTests {
+public class RpcProviderUserApplicationTests {
+
+    @Autowired
+    ISysUserMapper iSysUserMapper;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        SysUser sysUser = iSysUserMapper.selectByPrimaryKey(1);
+        System.out.println(123);
     }
 
 }

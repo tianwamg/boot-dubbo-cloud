@@ -30,11 +30,11 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.3</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
@@ -42,9 +42,13 @@
             <version>2.7.7</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba.nacos</groupId>
             <artifactId>nacos-client</artifactId>
+        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
         <dependency>
