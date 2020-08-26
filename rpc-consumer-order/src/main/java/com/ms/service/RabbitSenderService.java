@@ -1,5 +1,6 @@
 package com.ms.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.AmqpException;
@@ -47,6 +48,30 @@ public class RabbitSenderService {
             });
         }catch (Exception e){
             log.error("秒杀成功异步发送邮件通知消息-发生异常，消息为：{}",orderNo,e.fillInStackTrace());
+        }
+    }
+
+    //秒杀成功后生成抢购订单-发送信息进入死信队列，超时订单失效
+    public void sendKilSuccessOrderExpireMsg(final String orderNo){
+        log.info("秒杀成功后生成抢购订单-发送信息入死信队列-准备发送消息：{}",orderNo);
+        try{
+            if(StringUtils.isNotBlank(orderNo)){
+                rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+                rabbitTemplate.setExchange(env.getProperty("mq.kill.success.dead.exchange"));
+                rabbitTemplate.setRoutingKey(env.getProperty("mq.kill.success.dead.routing.key"));
+                rabbitTemplate.convertAndSend((Object) orderNo, new MessagePostProcessor() {
+                    @Override
+                    public Message postProcessMessage(Message message) throws AmqpException {
+                        MessageProperties properties = message.getMessageProperties();
+                        properties.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+                        properties.setHeader(AbstractJavaTypeMapper.DEFAULT_CONTENT_CLASSID_FIELD_NAME,String.class);
+                        properties.setExpiration(env.getProperty("mq.kill.success.expire"));
+                        return message;
+                    }
+                });
+            }
+        }catch (Exception e){
+            log.error("秒杀成功后生成抢购订单-发送信息入死信队列，等待着一定时间失效超时未支付的订单-发生异常，消息为：{}",orderNo,e.fillInStackTrace());
         }
     }
 }

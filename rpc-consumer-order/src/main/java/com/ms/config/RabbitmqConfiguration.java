@@ -1,5 +1,6 @@
 package com.ms.config;
 
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -13,6 +14,8 @@ import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import java.util.Map;
 
 @Configuration
 public class RabbitmqConfiguration {
@@ -86,5 +89,42 @@ public class RabbitmqConfiguration {
     @Bean
     public Binding successEmailBinding(){
         return BindingBuilder.bind(successEmailQueue()).to(successEmailExchage()).with(environment.getProperty("mq.kill.success.email.routing.key"));
+    }
+
+    //构建秒杀成功h后订单超时未支付的死信队列消息模型
+    @Bean
+    public Queue successKillDeadQueue(){
+        Map<String,Object> map = Maps.newHashMap();
+        map.put("x-dead-letter-exchange",environment.getProperty("mq.kill.success.dead.exchange"));
+        map.put("x-dead-letter-routing-key",environment.getProperty("mq.kill.success.real.routing.key"));
+        return new Queue(environment.getProperty("mq.kill.success.dead.queue"),true,false,false,map);
+    }
+
+    //基本交换机
+    @Bean
+    public TopicExchange successKillDeadExchange(){
+        return new TopicExchange(environment.getProperty("mq.kill.success.dead.exchange"),true,false);
+    }
+
+    //基本交换机+基本路由->死信队列的绑定
+    @Bean
+    public Binding successKillDeadBinding(){
+        return BindingBuilder.bind(successKillDeadQueue()).to(successKillDeadExchange()).with(environment.getProperty("mq.kill.success.dead.routing.key"));
+    }
+
+    //真正的队列
+    @Bean
+    public Queue successRealQueue(){
+        return new Queue(environment.getProperty("mq.kill.success.real.queue"),true);
+    }
+
+    @Bean
+    public TopicExchange successRealExchange(){
+        return new TopicExchange(environment.getProperty("mq.kill.success.real.exchange"),true,false);
+    }
+
+    @Bean
+    public Binding successRealBinding(){
+        return BindingBuilder.bind(successRealQueue()).to(successRealExchange()).with(environment.getProperty("mq.kill.success.real.routing.key"));
     }
 }

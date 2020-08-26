@@ -26,4 +26,14 @@ public class RabbitReceiveService {
             log.error("秒杀异步邮件通知-接收消息-发生异常：",e.fillInStackTrace());
         }
     }
+
+    @RabbitListener(queues = {"${mq.kill.success.real.queue}"},containerFactory = "singleListenerContainer")
+    public void ConsumeExpireOrder(String orderNo){
+        try{
+            //逻辑判断如果未支付，则将订单返回
+            log.info("用户秒杀成功后超时未支付-监听者-接收消息:{}",orderNo);
+        }catch (Exception e){
+            log.error("用户秒杀成功后超时未支付-监听者-发生异常：",e.fillInStackTrace());
+        }
+    }
 }

@@ -34,4 +34,9 @@ public class RpcConsumerOrderApplicationTests {
 
     }
 
+    @Test
+    public void sendExpire(){
+        senderService.sendKilSuccessOrderExpireMsg("1111");
+    }
+
 }
