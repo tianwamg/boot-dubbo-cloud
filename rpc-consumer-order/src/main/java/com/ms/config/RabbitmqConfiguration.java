@@ -25,6 +25,7 @@ public class RabbitmqConfiguration {
     @Autowired
     private CachingConnectionFactory connectionFactory;
 
+    @Autowired
     private SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer;
 
     //单一消费者
