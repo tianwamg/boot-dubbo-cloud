@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,9 @@ public class RpcConsumerOrderApplicationTests {
 
     @Autowired
     MailService mailService;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Test
     public void contextLoads() {
@@ -43,6 +47,17 @@ public class RpcConsumerOrderApplicationTests {
             e.printStackTrace();
         }
         System.out.println(123);
+    }
+
+    @Test
+    public void redis(){
+        /*redisTemplate.opsForValue().set("kabc","abcdefg");
+        boolean flag = redisTemplate.opsForValue().setIfAbsent("ha","h",30,TimeUnit.SECONDS);
+        if(flag) {
+            flag = redisTemplate.opsForValue().setIfAbsent("ha","h",30,TimeUnit.SECONDS);
+            System.out.println(flag);
+            rService.t();
+        }*/
     }
 
 }
