@@ -37,6 +37,12 @@ public class RpcConsumerOrderApplicationTests {
     @Test
     public void sendExpire(){
         senderService.sendKilSuccessOrderExpireMsg("1111");
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(123);
     }
 
 }
