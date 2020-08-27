@@ -57,8 +57,8 @@ public class RabbitSenderService {
         try{
             if(StringUtils.isNotBlank(orderNo)){
                 rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
-                rabbitTemplate.setExchange(env.getProperty("mq.kill.success.dead.exchange"));
-                rabbitTemplate.setRoutingKey(env.getProperty("mq.kill.success.dead.routing.key"));
+                rabbitTemplate.setExchange(env.getProperty("mq.kill.success.real.exchange"));
+                rabbitTemplate.setRoutingKey(env.getProperty("mq.kill.success.real.routing.key"));
                 rabbitTemplate.convertAndSend((Object) orderNo, new MessagePostProcessor() {
                     @Override
                     public Message postProcessMessage(Message message) throws AmqpException {
