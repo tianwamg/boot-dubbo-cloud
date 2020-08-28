@@ -129,4 +129,23 @@ public class RabbitmqConfiguration {
     public Binding successRealBinding(){
         return BindingBuilder.bind(successRealQueue()).to(successRealExchange()).with(environment.getProperty("mq.kill.success.dead.routing.key"));
     }
+
+
+    //RabbitMQ限流专用
+    @Bean
+    public Queue executeLimitQueue(){
+        Map<String,Object> map = Maps.newHashMap();
+        map.put("x-max-length",environment.getProperty(""));
+        return new Queue(environment.getProperty(""),true,false,false,map);
+    }
+
+    @Bean
+    public TopicExchange executeLimitExchange(){
+        return new TopicExchange(environment.getProperty(" "),true,false);
+    }
+
+    @Bean
+    public Binding executeLimitBinding(){
+        return BindingBuilder.bind(executeLimitQueue()).to(executeLimitExchange()).with(environment.getProperty(""));
+    }
 }
