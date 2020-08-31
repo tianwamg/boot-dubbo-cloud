@@ -135,17 +135,17 @@ public class RabbitmqConfiguration {
     @Bean
     public Queue executeLimitQueue(){
         Map<String,Object> map = Maps.newHashMap();
-        map.put("x-max-length",environment.getProperty(""));
-        return new Queue(environment.getProperty(""),true,false,false,map);
+        map.put("x-max-length",environment.getProperty("spring.rabbitmq.listener.simple.prefetch",Integer.class));
+        return new Queue(environment.getProperty("mq.execute.limit.queue.name"),true,false,false,map);
     }
 
     @Bean
     public TopicExchange executeLimitExchange(){
-        return new TopicExchange(environment.getProperty(" "),true,false);
+        return new TopicExchange(environment.getProperty("mq.execute.limit.queue.exchange"),true,false);
     }
 
     @Bean
     public Binding executeLimitBinding(){
-        return BindingBuilder.bind(executeLimitQueue()).to(executeLimitExchange()).with(environment.getProperty(""));
+        return BindingBuilder.bind(executeLimitQueue()).to(executeLimitExchange()).with(environment.getProperty("mq.execute.limit.queue.routing.key"));
     }
 }
