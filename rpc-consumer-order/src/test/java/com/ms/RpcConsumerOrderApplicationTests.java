@@ -1,5 +1,7 @@
 package com.ms;
 
+import com.ms.config.RedisConfiguration;
+import com.ms.config.ZookeeperConfiguration;
 import com.ms.service.MailService;
 import com.ms.service.RabbitSenderService;
 import org.apache.curator.framework.CuratorFramework;
@@ -11,6 +13,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -100,7 +103,6 @@ public class RpcConsumerOrderApplicationTests {
         InterProcessMutex mutex = new InterProcessMutex(curatorFramework,pathPrefix+"-ttt");
         try {
             if(mutex.acquire(10l,TimeUnit.SECONDS)){
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,6 +115,12 @@ public class RpcConsumerOrderApplicationTests {
                 }
             }
         }
+    }
+
+    @Test
+    public void anno(){
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ZookeeperConfiguration.class);
+        System.out.println(context.getBean(""));
     }
 
 }
