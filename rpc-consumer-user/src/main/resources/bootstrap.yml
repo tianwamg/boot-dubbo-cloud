@@ -1,0 +1,28 @@
+server:
+  port: 10091
+spring:
+  application:
+    name: rpc-consumer-user
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        group: DEV_GROUP
+
+
+dubbo:
+  application:
+    name: rpc-consumer-user
+    register-consumer: true
+  registry:
+    address: nacos://127.0.0.1:8848?username=nacos&password=nacos
+  consumer:
+    retries: 2
+    timeout: 5000
+  metadata-report: nacos://127.0.0.1:8848
+  config-center:
+    address: nacos://127.0.0.1:8848
+    config-file: rpc-consumer-user.yaml
+    #group: DEV_GROUP
