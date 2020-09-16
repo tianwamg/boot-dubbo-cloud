@@ -8,7 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @MapperScan("com.ms.mapper")
 @EnableDiscoveryClient
-//@EnableDubbo
+@EnableDubbo
 @SpringBootApplication
 public class RpcProviderUserApplication {
 
